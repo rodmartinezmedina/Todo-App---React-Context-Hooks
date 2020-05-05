@@ -3,30 +3,57 @@ import axios from 'axios';
 
 export const AuthContext = createContext();
 
-class AuthContextProvider extends Component {
+export class AuthContextProvider extends Component {
   state = {
-    user
-    tasks
-    isLoggedIn
-    username
-    email
+    user: null,
+    username: '',
+    email: '',
     password: '',
+    confirmPassword:'',
+    tasks: [],
+    isLoggedIn: false,
+    signupError: false,
+    loginError: false,
     axios: axios.create({ baseURL: ProcessingInstruction.env.REACT_APP_API_URL,
     withCredentials: true })
   }
 
-  handleChange = () => {
-
+  handleChange = (event) => {
+    const { name, value } = event.target;
+    this.setState({ [name]: value});
   }
 
-  signup = e => {
-
+  signup = (event) => {
+    event.preventDefault();
+    const { username, email, password } = this.state;
+    
+    if(password === confirmPassword) {
+    this.state.axios
+      .post('/auth/signup', {username, email, password})
+      .then(({user}) => this.setState({ isLoggedIn:true, user }))
+      .catch(err => this.setState({ isLoggedIn: false }))
+    } else {
+      this.setState({ signupError:true })
+    }
+    this.setState({ username: '', email: '', password:'', confirmPassword: '' }) 
   }
 
-  login = e => {
 
+  login = (event) => {
+    event.preventDefault();
+    const { email, password } = this.state;
+
+    this.state.axios
+      .post('/auth/login', {email, password})
+      .then (({user}) => {
+        this.setState({ isLoggedIn: true, user })
+      })
+      .catch(err => {
+        this.setState({ isLoggedIn: false, loginError: true })
+      })
   }
 
+  
   logout = e => {
     this.state.axios
       .post('/auth/logout', {})

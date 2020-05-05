@@ -54,7 +54,7 @@ router.post('/', (req, res, next) => {
 // UPDATE Task
 router.put('/:id', (req, res, next) => {
   const { id } = req.params;
-  const { name, description } = req.body;
+  const { name, description, taskDone } = req.body;
   Task
     .findByIdAndUpdate(id, { name, description })
     .then(updatedTask => {
