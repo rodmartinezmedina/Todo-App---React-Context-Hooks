@@ -78,5 +78,4 @@ export class AuthContextProvider extends Component {
 
 };
 
-
 export default AuthContextProvider;
