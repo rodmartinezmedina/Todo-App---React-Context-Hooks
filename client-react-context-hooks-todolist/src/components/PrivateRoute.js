@@ -7,19 +7,20 @@ import { Route, Redirect } from 'react-router-dom';
 import { AuthContext } from './../contexts/authContext';
 
 
-const PrivateRoute({ component: Component, ...rest }) {
+const PrivateRoute = ({ component: Component, ...rest }) => {
   return (
     <AuthContext.Consumer> 
       {(context) => {
         const { isLoggedIn } = context;
         return (
-        <Route
-          {...rest} render={ (props) => { 
+        <Route {...rest} 
+          render={ (props) => { return (
             isLoggedIn ? (
               <Component {...props} />
             ) : (
               <Redirect to='/login' />
             )
+          )
           }}
           />
         )

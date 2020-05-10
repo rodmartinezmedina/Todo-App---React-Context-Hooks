@@ -3,19 +3,20 @@ import { Route, Redirect } from 'react-router-dom';
 import { AuthContext } from './../contexts/authContext';
 
 
-const AnonRoute({ component: Component, ...rest}) {
+const AnonRoute = ({ component: Component, ...rest}) => {
   return (
     <AuthContext.Consumer>
       {(context) => {
         const { isLoggedIn } = context;
         return (
           <Route
-            {...rest} render={ (props) => {
+            {...rest} render={ (props) => { return (
               isLoggedIn ? (
-
+                <Redirect to='/add-task' />
               ) : (
-
+                <Component {...props} />
               )
+            )
             }}
           />
         )
@@ -23,3 +24,5 @@ const AnonRoute({ component: Component, ...rest}) {
     </AuthContext.Consumer>
   )
 }
+
+export default AnonRoute;
