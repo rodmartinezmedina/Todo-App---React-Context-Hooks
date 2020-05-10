@@ -9,9 +9,9 @@ class TasksContextProvider extends Component {
     tasks: [],
     name: "",
     description: "",
-    isDone : false
+    isDone : false,
     axios: axios.create({baseURL: process.env.REACT_APP_API_URL,
-      withCredentials })
+      withCredentials: true })
   }
 
   componentDidMount = () => {
@@ -79,9 +79,9 @@ class TasksContextProvider extends Component {
       .put(`/tasks/${_id}`, {name, description, taskDone: true})
       .then(({data}) => {
         let task = this.state.tasks.filter(oneTask => {
-          return _id === oneTodo._id
+          return _id === oneTask._id
         })
-        todo[0].taskDone = true;
+        task[0].taskDone = true;
         this.setState({tasks: [...this.state.tasks, task]});
       })
       .catch(err => console.log(err))

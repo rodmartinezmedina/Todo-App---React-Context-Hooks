@@ -14,7 +14,7 @@ export class AuthContextProvider extends Component {
     isLoggedIn: false,
     signupError: false,
     loginError: false,
-    axios: axios.create({ baseURL: ProcessingInstruction.env.REACT_APP_API_URL,
+    axios: axios.create({ baseURL: process.env.REACT_APP_API_URL,
     withCredentials: true })
   }
 
@@ -25,7 +25,7 @@ export class AuthContextProvider extends Component {
 
   signup = (event) => {
     event.preventDefault();
-    const { username, email, password } = this.state;
+    const { username, email, password, confirmPassword } = this.state;
     
     if(password === confirmPassword) {
     this.state.axios
@@ -66,7 +66,7 @@ export class AuthContextProvider extends Component {
     return (
       <AuthContext.Provider value={{
         ...this.state,
-        handleChange: this.handleChange
+        handleChange: this.handleChange,
         signup: this.signup,
         login: this.login,
         logout: this.logout
