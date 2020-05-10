@@ -4,7 +4,7 @@ import { Switch, Route } from "react-router-dom";
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Signup from './components/Signup';
-import Login from './Components/Login';
+import Login from './components/Login';
 
 import AnonRoute from './components/AnonRoute';
 import PrivateRoute from './components/PrivateRoute';
@@ -21,7 +21,7 @@ function App() {
           <Switch>
           <Route exact path='/' component={Home} />
           <AnonRoute exact path='/signup' component={Signup}/>
-          <AnonRoute exact path='/signup' component={Login}/>
+          <AnonRoute exact path='/login' component={Login}/>
 
 
           </Switch>
