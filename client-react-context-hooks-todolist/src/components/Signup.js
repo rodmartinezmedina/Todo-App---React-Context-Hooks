@@ -1,12 +1,11 @@
 import React from 'react';
-import { Link, Route, Redirect } from 'react-router-dom';
 import { AuthContext } from '../contexts/authContext';
 
 const Signup =() => {
   return (
     <AuthContext.Consumer>
     { (context) => {
-      const { password, confirmPassword, username, signup, signupError, handleChange } = context;
+      const { password, confirmPassword, username, email, signup, signupError, handleChange } = context;
       return (
         <div className='form-container'>
           <h1 className='form-title'>Signup</h1>
@@ -18,6 +17,16 @@ const Signup =() => {
               type='text'
               name='username'
               value={username}
+              onChange={handleChange}
+              />
+            </div>
+
+            <div className='form-group'>
+              <label>Email:</label>
+              <input
+              type='email'
+              name='email'
+              value={email}
               onChange={handleChange}
               />
             </div>
@@ -45,8 +54,6 @@ const Signup =() => {
           </form>
 
           </div>
-
-
       )
     }}
     </AuthContext.Consumer>

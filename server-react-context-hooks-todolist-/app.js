@@ -7,12 +7,10 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const cors = require('cors');
-const Mongostore = require('connect-mongo')(session);
+const MongoStore = require('connect-mongo')(session);
 require('dotenv').config();
-
-// const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
 const tasksRouter = require('./routes/tasks');
+const authRouter = require('./routes/auth');
 
 // EXPRESS SERVER
 const app = express();
@@ -20,18 +18,21 @@ const app = express();
 // CORS MIDDLEWARE SETUP
 app.use(
   cors({
-    creadentials: true,
+    credentials: true,
     origin: [process.env.PUBLIC_DOMAIN]
   })
 );
 
 // MONGOOSE CONNECTION
 mongoose
-  .connect(process.env.MONGODB_URI, {
+  .connect('mongodb://localhost/todo-app-react-context-hooks', {
+    useUnifiedTopology: true ,
     keepAlive: true,
     useNewUrlParser: true,
-    reconnectTries: Number.MAX_VALUE,
-    useFindAndModify: false
+    useCreateIndex: true,
+    // reconnectTries: Number.MAX_VALUE,
+    useFindAndModify: false,
+       
   })
   .then(() => console.log(`Connected to database`))
   .catch(err => console.log(err));
@@ -42,9 +43,15 @@ app.use(
     store: new MongoStore({
       mongooseConnection: mongoose.connection,
       ttl: 24 * 60 * 60 * 7 // 7 days
-    })
+    }),
+    secret: process.env.SECRET_SESSION,
+    resave: true,
+    saveUninitialized:true,
+    cookie: {
+      maxAge: 24 * 60 * 60 * 365
+    }
   })
-);
+)
 
 // ROUTERS MIDDLEWARE
 // app.use('/', indexRouter);
@@ -87,6 +94,8 @@ app.use((err, req, res, next) => {
   }
 });
 
+
+app.listen(process.env.PORT || 3000)
 
 
 module.exports = app;

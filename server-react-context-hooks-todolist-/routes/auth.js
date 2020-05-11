@@ -7,7 +7,7 @@ const saltRounds = 10;
 
 // get User
 router.get('/', function (req, res, next) {
-  const id = = req.session.currentUser._id
+  const id = req.session.currentUser._id
   User.findById(id)
     .populate('tasks')
     .then((currentUser) => {
@@ -30,7 +30,7 @@ router.post('/signup', async (req, res, next) => {
       const salt = bcrypt.genSaltSync(saltRounds);
       const hashPass = bcrypt.hashSync(password, salt);
 
-      const newUser = await User.create({ username, password, hashPass });
+      const newUser = await User.create({ username, email, password, hashPass });
       newUser.password = "";
       req.session.currentUser = newUser;
       res
