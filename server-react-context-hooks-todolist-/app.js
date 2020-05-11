@@ -25,7 +25,7 @@ app.use(
 
 // MONGOOSE CONNECTION
 mongoose
-  .connect('mongodb://localhost/todo-app-react-context-hooks', {
+  .connect('mongodb://localhost:27017/todo-app-react-context-hooks', {
     useUnifiedTopology: true ,
     keepAlive: true,
     useNewUrlParser: true,
@@ -95,7 +95,7 @@ app.use((err, req, res, next) => {
 });
 
 
-app.listen(process.env.PORT || 3000)
+// app.listen(process.env.PORT || 3000)
 
 
 module.exports = app;
