@@ -23,7 +23,7 @@ export class AuthContextProvider extends Component {
     this.setState({ [name]: value});
   }
 
-  signup = (event) => {
+  signup = event => {
     event.preventDefault();
     const { username, email, password, confirmPassword } = this.state;
     
@@ -54,7 +54,7 @@ export class AuthContextProvider extends Component {
   }
 
   
-  logout = e => {
+  logout = () => {
     this.state.axios
       .post('/auth/logout', {})
       .then(({data}) => data);

@@ -6,8 +6,9 @@ const User = require("../models/user-model");
 const saltRounds = 10;
 
 // get User
-router.get('/', function (req, res, next) {
+router.get('/', function(req, res, next) {
   const id = req.session.currentUser._id
+
   User.findById(id)
     .populate('tasks')
     .then((currentUser) => {
@@ -21,24 +22,24 @@ router.get('/', function (req, res, next) {
 
 // create User
 router.post('/signup', async (req, res, next) => {
-  const { username, password } = req.body;
+  const { username, email, password } = req.body;
   try {
-    const userNameExists = await User.findOne({ username }, 'username');
-
-    if (userNameExists) return next(createError(400));
+    const usernameExists = await User.findOne({ username }, 'username');
+    
+    if (usernameExists) return next(createError(400));
     else {
       const salt = bcrypt.genSaltSync(saltRounds);
       const hashPass = bcrypt.hashSync(password, salt);
 
-      const newUser = await User.create({ username, email, password, hashPass });
+      const newUser = await User.create({username, email, password: hashPass});
       newUser.password = "";
       req.session.currentUser = newUser;
-      res
+      res 
         .status(201)
         .json(newUser);
     }
   }
-  catch (error) {
+  catch(error){
     next(createError(error));
   }
 });

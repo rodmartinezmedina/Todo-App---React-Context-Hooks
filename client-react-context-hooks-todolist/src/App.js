@@ -11,6 +11,7 @@ import PrivateRoute from './components/PrivateRoute';
 
 import AuthContextProvider from './contexts/authContext';
 import TasksContextProvider from './contexts/tasksContext';
+import MyTasks from './components/MyTasks';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route exact path='/' component={Home} />
           <AnonRoute exact path='/signup' component={Signup}/>
           <AnonRoute exact path='/login' component={Login}/>
+          <PrivateRoute exact path='/mytasks' component={MyTasks}/>
 
 
           </Switch>

@@ -12,7 +12,7 @@ const AnonRoute = ({ component: Component, ...rest}) => {
           <Route
             {...rest} render={ (props) => { return (
               isLoggedIn ? (
-                <Redirect to='/add-task' />
+                <Redirect to='/mytasks' />
               ) : (
                 <Component {...props} />
               )

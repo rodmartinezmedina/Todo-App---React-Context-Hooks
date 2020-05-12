@@ -4,13 +4,16 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 const session = require('express-session');
-const cors = require('cors');
 const MongoStore = require('connect-mongo')(session);
+const cors = require('cors');
 require('dotenv').config();
+
 const tasksRouter = require('./routes/tasks');
 const authRouter = require('./routes/auth');
+
+// console.log(process.env.MONGODB_URI);
 
 // EXPRESS SERVER
 const app = express();
@@ -19,23 +22,24 @@ const app = express();
 app.use(
   cors({
     credentials: true,
-    origin: [process.env.PUBLIC_DOMAIN]
+    origin: [process.env.PUBLIC_DOMAIN],
   })
 );
 
+
 // MONGOOSE CONNECTION
 mongoose
-  .connect('mongodb://localhost:27017/todo-app-react-context-hooks', {
+  .connect(process.env.MONGODB_URI, {
     useUnifiedTopology: true ,
     keepAlive: true,
     useNewUrlParser: true,
     useCreateIndex: true,
     // reconnectTries: Number.MAX_VALUE,
-    useFindAndModify: false,
-       
+    useFindAndModify: false, ///changed as mern-project manager 
   })
   .then(() => console.log(`Connected to database`))
-  .catch(err => console.log(err));
+  .catch(err => console.log(`Mongoose connection error => `, err));
+
 
 // SESSION MIDDLEWARE
 app.use(
@@ -53,6 +57,16 @@ app.use(
   })
 )
 
+
+// MIDDLEWARE
+app.use(logger('dev'));
+app.use(express.json());  ///changed as mern-project manager 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+
 // ROUTERS MIDDLEWARE
 // app.use('/', indexRouter);
 // app.use('/users', usersRouter);
@@ -60,24 +74,15 @@ app.use('/auth', authRouter);
 app.use('/tasks', tasksRouter);
 
 
-
-// MIDDLEWARE
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'jade');
 
 
+// 404
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  next(createError(404));
+app.use((req, res, next) => {
+  res.status(404).json({ code: "not found" });
 });
 
 
