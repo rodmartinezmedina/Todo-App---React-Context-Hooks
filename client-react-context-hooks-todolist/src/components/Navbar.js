@@ -19,7 +19,7 @@ const Navbar = () => {
             (
             <>
               <div className='navbar-e'>
-                <Link>
+                <Link to={'/add'}>
                   <button className='nav-btn'>Add Tasks</button>
                 </Link>
               </div>

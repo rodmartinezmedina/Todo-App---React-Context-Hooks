@@ -6,17 +6,20 @@ const User = require("../models/user-model");
 const saltRounds = 10;
 
 // get User
-router.get('/', function(req, res, next) {
-  const id = req.session.currentUser._id
-
+router.get('/me', (req, res, next) => { //added isLoggedin as prjectmanager
+  const currentUserSessionData = req.session.currentUser;
+  const id = currentUserSessionData._id 
+  
   User.findById(id)
     .populate('tasks')
     .then((currentUser) => {
+      // console.log(currentUser);
       currentUser.password = "";
       res
         .status(200)
         .json(currentUser);
     })
+    console.log(currentUserSessionData);
 });
 
 

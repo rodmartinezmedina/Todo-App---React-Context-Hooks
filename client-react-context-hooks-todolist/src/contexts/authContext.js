@@ -5,7 +5,7 @@ export const AuthContext = createContext();
 
 export class AuthContextProvider extends Component {
   state = {
-    user: null,
+    // user: null,
     username: '',
     email: '',
     password: '',
@@ -23,6 +23,13 @@ export class AuthContextProvider extends Component {
     this.setState({ [name]: value});
   }
 
+    // me = event => {
+    //   event.preventDefault();
+    //   return this.auth.get("/auth/me", {})
+    //   .then(({ data }) => data);
+    // }
+  
+
   signup = event => {
     event.preventDefault();
     const { username, email, password, confirmPassword } = this.state;
@@ -30,7 +37,7 @@ export class AuthContextProvider extends Component {
     if(password === confirmPassword) {
     this.state.axios
       .post('/auth/signup', {username, email, password})
-      .then(({user}) => this.setState({ isLoggedIn:true, user }))
+      .then(({user}) => this.setState({ isLoggedIn:true, username }))
       .catch(err => this.setState({ isLoggedIn: false }))
     } else {
       this.setState({ signupError:true })

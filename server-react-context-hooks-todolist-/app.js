@@ -18,7 +18,7 @@ const authRouter = require('./routes/auth');
 // EXPRESS SERVER
 const app = express();
 
-// CORS MIDDLEWARE SETUP
+//  MIDDLEWARE SETUP
 app.use(
   cors({
     credentials: true,
@@ -33,7 +33,7 @@ mongoose
     useUnifiedTopology: true ,
     keepAlive: true,
     useNewUrlParser: true,
-    useCreateIndex: true,
+    // useCreateIndex: true,
     // reconnectTries: Number.MAX_VALUE,
     useFindAndModify: false, ///changed as mern-project manager 
   })
@@ -60,23 +60,20 @@ app.use(
 
 // MIDDLEWARE
 app.use(logger('dev'));
-app.use(express.json());  ///changed as mern-project manager 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(express.json());  ///changed as mern-project manager 
+
+//ROUTE FOR SERVING REACT APP (index.hml)
 app.use(express.static(path.join(__dirname, 'public')));
 
 
 // ROUTERS MIDDLEWARE
 // app.use('/', indexRouter);
 // app.use('/users', usersRouter);
-app.use('/auth', authRouter);
+app.use('/auth', authRouter);   ///the 2nd says 'auth' in mern-project manager 
 app.use('/tasks', tasksRouter);
-
-
-// view engine setup
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'jade');
 
 
 // 404
@@ -98,9 +95,6 @@ app.use((err, req, res, next) => {
     res.status(statusError).json(err);
   }
 });
-
-
-// app.listen(process.env.PORT || 3000)
 
 
 module.exports = app;
